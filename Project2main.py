@@ -2,17 +2,18 @@ import sys
 import random
 import math
 
-cpumem = None
-pagesize = None
-jobnum = None
-pagetable = []
-jobQ = []
-readyQ = []
-runningQ = []
-finList = []
+cpumem = None  # global variable for the total amt of memory
+pagesize = None  # global variable for the size of a page
+jobnum = None  # global variable for the total number of jobs
+pagetable = []  # global array for page table
+jobQ = []  # global array for Job Queue (stores jobs that haven't had memory allocated/executed)
+readyQ = []  # global array for Ready Queue (stores jobs that have had memory allocated but aren't being executed
+runningQ = []  # global array for Running Queue (stores a single job which is being executed)
+finList = []  # global array for Finished Jobs (stores all the jobs as they finish executing completely)
 
 
 # The Job Queue holds all of the jobs that are waiting to have pages allocated (they haven't been run yet)
+# Creates Job object instances and appends them to Job Queue
 def initJobQueue():
     for x in range(jobnum):
         jobQ.append(Job((str(x)), minrun, maxrun, minmem, maxmem))
@@ -188,13 +189,14 @@ class Job:
 
 
 # 1. size of computer memory, 2. size of a page, 3. # of jobs,
-# 4. min run time, 5. max run time  6. min memory, 7. max memory 8. random seed
+# 4. min run time, 5. max run time  6. min memory, 7. max memory
 if __name__ == '__main__':
-
+    # initialize all command line arguments to respective global variables
     cpumem = int(sys.argv[1])
     if cpumem % int(sys.argv[2]) == 0:
         pagesize = int(sys.argv[2])
     else:
+        # makes sure that mem size is even multiple of page size
         print("The memory size must be an even multiple of the page size")
         sys.exit()
 
@@ -203,16 +205,20 @@ if __name__ == '__main__':
     maxrun = int(sys.argv[5])
     minmem = int(sys.argv[6])
     maxmem = int(sys.argv[7])
-    seed = int(sys.argv[8])
 
+    # initialize the page table to all free spaces (.)
     pagetable = ['.'] * math.ceil((cpumem / pagesize))
 
+    # print out of the parameters
     print("Simulator Parameters: \n Memory Size: {0} \n Page Size: {1} \n Random Seed: ".format(cpumem, pagesize))
     print(" Number of jobs: {0} \n Runtime (min - max): {1}-{2} \n Memory (min - max): {3}-{4}".format(jobnum, minrun,
                                                                                                        maxrun, minmem,
                                                                                                        maxmem))
-
+    # initialize job queue
     initJobQueue()
+    # quick printout of jobs in job queue
     printJobQueue()
+    # preform round robin process
     roundRobin()
+    # finally print the results
     printResults()
