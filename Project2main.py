@@ -147,8 +147,12 @@ def printJobQueue():
 def printResults():
     print("Job Information: ")
     print("| Job # | |Arrival| |Completed|")
+    averageTT = 0
     for x in range(len(finList)):
         print("Job:  {0}     {1}        {2}".format(finList[x].job, finList[x].arrival, finList[x].completion))
+        averageTT = averageTT + (finList[x].completion - finList[x].arrival)
+    print("Average turn around time: {0}".format(averageTT/jobnum))
+
 
 
 # Job Obect
