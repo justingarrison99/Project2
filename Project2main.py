@@ -16,20 +16,34 @@ class Job:
         return "| Job {0}, Runtime: {1}, MEM: {2} |".format(self.job, self.runT, self.mem)
 
     def allocatePages(self):
-        temp = math.ceil(self.mem / pagesize)  # gets the number of pages a job needs
+        pagesForJob = math.ceil(self.mem / pagesize)  # gets the number of pages a job needs
 
-        for k in range(len(pagetable)):  # loop through entire pagetable
-            if pagetable[k] == '.' and temp + k < len(pagetable):  # find the first free space
-                if pagetable[k + temp] == '.':
-                    self.setPage(k, (
-                            k + temp))  # if there is continous free space, # then set those pages to the corresponding job number
-                    return True
-        return False
+        pageBool = enoughPages(pagesForJob)   #if there's enough pages returns back the number of pages needed, else returns false
 
-    def setPage(self, start, end):  # sets the pages to the corresponding job number
-        for i in range(start, end):
-            if pagetable[i] == '.':
+        if not pageBool:
+            return False
+        else:
+            self.setPage(pageBool)
+            return True
+
+    def setPage(self, numberOfPages):  # sets the pages to the corresponding job number
+        pagecount = 0
+        for i in range(len(pagetable)):
+            if pagetable[i] == '.' and pagecount < numberOfPages:
                 pagetable[i] = self.job
+                pagecount = pagecount+1
+
+
+def enoughPages(numpage):
+    counter = 0
+    for entry in range(len(pagetable)):
+        if pagetable[entry] == '.':
+            counter = counter + 1
+
+    if counter >= numpage:
+        return numpage
+    else:
+        return False
 
 
 def initJobQueue():
@@ -64,10 +78,13 @@ def printReadyQueue():
 
 
 def printJobQueue():
-    print("\nJob Queue: ")
-    print(" / Job #    /  Runtime /   Memory / ")
-    for i in range(len(jobQ)):
-        print(jobQ[i])
+    if len(jobQ) != 0:
+        print("\nJob Queue: ")
+        print(" / Job #    /  Runtime /   Memory / ")
+        for i in range(len(jobQ)):
+             print(jobQ[i])
+    else:
+        print("NOTE: No more jobs to queue!")
 
 
 def freePageSpace(job_name):
@@ -99,6 +116,7 @@ def roundRobin():
     counter = 0
     while len(finList) < jobnum:
         print("=====Time Slice: {0}======".format(counter))
+        printJobQueue()
         pushJob(counter)
         printReadyQueue()
         readytorunning()
