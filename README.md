@@ -8,3 +8,5 @@ Please enter the following parameters: ensure that the size of a page is a multi
 5. max run time  
 6. min memory
 7. max memory
+
+example: /Project2main.py 100000 1000 10 2 15 5000 25000
