@@ -148,22 +148,26 @@ def printResults():
     print("Job Information: ")
     print("| Job # | |Arrival| |Completed|")
     averageTT = 0
+    averageWT = 0
     for x in range(len(finList)):
         print("Job:  {0}     {1}        {2}".format(finList[x].job, finList[x].arrival, finList[x].completion))
         averageTT = averageTT + (finList[x].completion - finList[x].arrival)
-    print("Average turn around time: {0}".format(averageTT/jobnum))
-
-
+        averageWT = averageWT + (finList[x].completion - finList[x].arrival) - finList[x].origRT
+    print("Average Turn Around Time: {0}".format(averageTT / jobnum))
+    print("Average Wait time: {0}".format(averageWT / jobnum))
+20, 21,
 
 # Job Obect
 class Job:
     arrival = 0  # arrival time of job
     completion = 0  # completion time of job
+    origRT = 0
 
     # job object initializer
     def __init__(self, name, min_run, max_run, min_mem, max_mem):
         self.job = name
         self.runT = random.randrange(min_run, max_run)  # randomly picks a number between the min and max range
+        self.origRT = self.runT
         self.mem = random.randrange(min_mem, max_mem)
 
     # equivalent to overridden .toString | just prints out the job object nicely
