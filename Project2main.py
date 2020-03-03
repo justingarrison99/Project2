@@ -155,7 +155,6 @@ def printResults():
         averageWT = averageWT + (finList[x].completion - finList[x].arrival) - finList[x].origRT
     print("Average Turn Around Time: {0}".format(averageTT / jobnum))
     print("Average Wait time: {0}".format(averageWT / jobnum))
-20, 21,
 
 # Job Obect
 class Job:
