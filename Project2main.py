@@ -113,7 +113,7 @@ def roundRobin():
 def printReadyQueue():
     print("Ready Queue: ")
     for x in range(len(readyQ)):
-        print("Job " + readyQ[x].job + "|" + str(readyQ[x].runT))
+        print("Job " + readyQ[x].job + "|runtime: " + str(readyQ[x].runT))
     print("\n")
 
 
@@ -188,7 +188,7 @@ class Job:
 
 
 # 1. size of computer memory, 2. size of a page, 3. # of jobs,
-# 4. min run time, 5. max run time  6. min memory, 7. max memory
+# 4. min run time, 5. max run time  6. min memory, 7. max memory 8. random seed
 if __name__ == '__main__':
 
     cpumem = int(sys.argv[1])
@@ -203,6 +203,7 @@ if __name__ == '__main__':
     maxrun = int(sys.argv[5])
     minmem = int(sys.argv[6])
     maxmem = int(sys.argv[7])
+    seed = int(sys.argv[8])
 
     pagetable = ['.'] * math.ceil((cpumem / pagesize))
 
