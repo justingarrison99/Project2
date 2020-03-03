@@ -39,3 +39,8 @@ if __name__ == '__main__':
 
     for x in range(jobnum):
         readyQ.append(Job(("Job " + str(x)), minrun, maxrun, minmem, maxmem))
+
+    print("\nJob Queue: ")
+    print(" / Job #  / Runtime  / Memory / ")
+    for i in range(len(readyQ)):
+        print("| {0}        {1}      {2}".format(readyQ[i].job, readyQ[i].runT, readyQ[i].mem))
